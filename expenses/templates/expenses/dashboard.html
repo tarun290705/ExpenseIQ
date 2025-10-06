@@ -1,0 +1,145 @@
+{% extends 'expenses/base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-center">Dashboard</h2>
+
+<!-- Summary Cards -->
+<div class="row mb-4 text-center">
+  <div class="col-md-4">
+    <div class="card text-white bg-success shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Total Income</h5>
+        <p class="card-text fs-4">₹{{ total_income }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-white bg-danger shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Total Expense</h5>
+        <p class="card-text fs-4">₹{{ total_expense }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-white bg-primary shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Balance</h5>
+        <p class="card-text fs-4">₹{{ balance }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="card p-4 mb-4 shadow-sm">
+  <h4 class="mb-3">Quick Actions</h4>
+  <div class="d-flex flex-wrap gap-2">
+    <a href="{% url 'expenses:add_expense' %}" class="btn btn-danger">
+      ➕ Add Expense
+    </a>
+    <a href="{% url 'expenses:add_income' %}" class="btn btn-success">
+      💰 Add Income
+    </a>
+    <a href="{% url 'expenses:add_category' %}" class="btn btn-secondary">
+      🏷️ Add Category
+    </a>
+    <a href="{% url 'expenses:manage_budget' %}" class="btn btn-warning text-dark">
+      💸 Manage Budget
+    </a>
+    <a href="{% url 'expenses:reports' %}" class="btn btn-info text-white">
+      📊 View Reports
+    </a>
+  </div>
+</div>
+
+<!-- Category-wise Expenses Chart -->
+<div class="card p-4 mb-4 shadow-sm">
+  <h4 class="mt-4">Category-wise Expenses</h4>
+<div class="card mb-4">
+  <div class="card-body text-center">
+    <canvas
+      id="categoryChart"
+      data-chart='{{ category_data|safe }}'
+      width="400"
+      height="400"
+    ></canvas>
+  </div>
+</div>
+</div>
+
+<!-- Recent Expenses Table -->
+<div class="card p-4 shadow-sm">
+  <h4 class="mb-3">Recent Expenses</h4>
+  <table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for expense in expenses %}
+      <tr>
+        <td>{{ expense.title }}</td>
+        <td>{{ expense.category.name }}</td>
+        <td>₹{{ expense.amount }}</td>
+        <td>{{ expense.date }}</td>
+        <td class="text-center">
+          <a href="{% url 'expenses:edit_expense' expense.pk %}" class="btn btn-sm btn-outline-primary me-2">
+            ✏️ Edit
+          </a>
+          <a href="{% url 'expenses:delete_expense' expense.pk %}" class="btn btn-sm btn-outline-danger">
+            🗑️ Delete
+          </a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center text-muted">No recent expenses found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Optional: Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/charts.js"></script>
+<script>
+  const ctx = document.getElementById("categoryChart");
+  const chartData = JSON.parse(ctx.getAttribute("data-chart") || "{}");
+
+  if (Object.keys(chartData).length) {
+    new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: Object.keys(chartData),
+        datasets: [
+          {
+            data: Object.values(chartData),
+            backgroundColor: [
+              "#007bff",
+              "#dc3545",
+              "#ffc107",
+              "#28a745",
+              "#6f42c1",
+              "#20c997",
+            ],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: "bottom" },
+        },
+      },
+    });
+  }
+</script>
+{% endblock %}

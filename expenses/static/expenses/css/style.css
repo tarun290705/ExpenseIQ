@@ -1,0 +1,71 @@
+/* General */
+body {
+  background-color: #f8f9fa;
+}
+
+h2,
+h4 {
+  color: #343a40;
+}
+
+/* Navbar */
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  font-weight: 500;
+}
+
+/* Cards */
+.card {
+  border-radius: 0.75rem;
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.card-text {
+  font-size: 1.5rem;
+}
+
+/* Tables */
+table th,
+table td {
+  vertical-align: middle !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #e9ecef;
+}
+
+/* Forms */
+form input,
+form select,
+form textarea {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+}
+
+form button {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.2rem;
+}
+
+/* Dashboard Chart */
+#categoryChart {
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+/* Media */
+img.profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}

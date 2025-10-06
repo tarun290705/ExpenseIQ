@@ -1,0 +1,13 @@
+{% extends 'expenses/base.html' %} {% block title %}Add Category{% endblock %}
+{% block content %}
+<div class="card p-4 shadow-sm">
+  <h3 class="mb-3">Add New Category</h3>
+  <form method="post">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Add</button>
+    <a href="{% url 'expenses:dashboard' %}" class="btn btn-secondary"
+      >Cancel</a
+    >
+  </form>
+</div>
+{% endblock %}

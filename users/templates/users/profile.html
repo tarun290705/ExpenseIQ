@@ -1,0 +1,42 @@
+{% extends 'expenses/base.html' %} {% block title %}Profile | ExpenseIQ 
+{% endblock %} {% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm p-4 mx-auto" style="max-width: 600px">
+    <div class="text-center mb-4">
+      <img
+        src="https://api.dicebear.com/6.x/initials/svg?seed={{ user.username }}"
+        alt="Profile Avatar"
+        class="rounded-circle mb-3"
+        width="100"
+      />
+      <h4>{{ user.username }}</h4>
+      <p class="text-muted">{{ user.email }}</p>
+    </div>
+
+    <hr />
+
+    <h5 class="mb-3 text-center">Account Details</h5>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <strong>Username:</strong> {{ user.username }}
+      </li>
+      <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+      <li class="list-group-item">
+        <strong>Date Joined:</strong> {{ user.date_joined|date:"F j, Y" }}
+      </li>
+    </ul>
+
+    <div class="text-center mt-4">
+      <form method="post" action="{% url 'users:logout' %}" class="d-inline">
+        {% csrf_token %}
+        <button
+          type="submit"
+          class="btn btn-link nav-link p-0 m-0 align-baseline"
+        >
+          Logout
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
